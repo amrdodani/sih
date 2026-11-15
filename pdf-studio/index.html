@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Studio</title>
+<meta name="description" content="Private, offline PDF viewer and editor. Files never leave your device.">
+<meta name="theme-color" content="#1f2937">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header id="topbar">
+  <div class="group">
+    <button id="btnOpen" title="Open PDF (Ctrl+O)">Open</button>
+    <button id="btnSave" title="Save (Ctrl+S). Annotations are flattened into the PDF.">Save</button>
+    <button id="btnPrint" title="Print">Print</button>
+  </div>
+  <div class="group">
+    <button id="btnUndo" title="Undo (Ctrl+Z)">Undo</button>
+    <button id="btnRedo" title="Redo (Ctrl+Y)">Redo</button>
+  </div>
+  <div class="group tools" id="tools">
+    <button data-tool="select" class="active" title="Select / move (Esc)">Select</button>
+    <button data-tool="highlight" title="Highlight an area">Highlight</button>
+    <button data-tool="text" title="Add text">Text</button>
+    <button data-tool="ink" title="Freehand draw">Draw</button>
+    <button data-tool="rect" title="Rectangle outline">Rectangle</button>
+    <button data-tool="whiteout" title="Cover with white">Whiteout</button>
+    <button data-tool="redact" title="Permanently black out (page is flattened to an image on save)">Redact</button>
+    <button id="btnSign" title="Draw or reuse a signature">Sign</button>
+    <button id="btnImage" title="Place an image">Image</button>
+  </div>
+  <div class="group" id="props" hidden>
+    <label>Color <input type="color" id="propColor"></label>
+    <label id="propSizeLabel"><span id="propSizeName">Size</span> <input type="number" id="propSize" min="1" max="200" step="1"></label>
+    <button id="btnDelAnnot" title="Delete selected annotation (Del)">Delete</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="group">
+    <button id="zoomOut" title="Zoom out">−</button>
+    <span id="zoomLabel">125%</span>
+    <button id="zoomIn" title="Zoom in">+</button>
+    <button id="zoomFit" title="Fit width">Fit</button>
+  </div>
+  <div class="group">
+    <input id="pageNum" type="number" min="1" value="1" title="Current page"> <span id="pageTotal">/ 0</span>
+  </div>
+  <button id="btnPanel" title="Toggle side panel">Panel</button>
+</header>
+
+<main id="layout">
+  <aside id="sidebar">
+    <div class="side-actions">
+      <button data-op="rotL" title="Rotate left">⟲</button>
+      <button data-op="rotR" title="Rotate right">⟳</button>
+      <button data-op="up" title="Move earlier">↑</button>
+      <button data-op="down" title="Move later">↓</button>
+      <button data-op="dup" title="Duplicate">Dup</button>
+      <button data-op="blank" title="Insert blank page after">+Blank</button>
+      <button data-op="del" title="Delete">Del</button>
+    </div>
+    <div class="hint">Click to select · Ctrl/Shift for several · drag to reorder</div>
+    <div id="thumbs"></div>
+  </aside>
+
+  <section id="viewer">
+    <div id="empty">
+      <h1>PDF Studio</h1>
+      <p>Open a PDF, or drop one anywhere on this window.</p>
+      <p><button class="primary" id="btnOpen2">Open a PDF</button> <button id="btnNew">New blank PDF</button></p>
+      <p class="small">Everything runs in your browser. Files are not uploaded anywhere.</p>
+    </div>
+    <div id="pages"></div>
+  </section>
+
+  <aside id="panel">
+    <div class="tabs">
+      <button data-tab="search" class="active">Search</button>
+      <button data-tab="forms">Forms</button>
+      <button data-tab="doc">Document</button>
+    </div>
+    <div class="tabbody" id="tab-search">
+      <form id="searchForm"><input id="searchInput" type="search" placeholder="Find text…"><button>Find</button></form>
+      <div id="searchStatus" class="small"></div>
+      <ul id="searchResults"></ul>
+    </div>
+    <div class="tabbody" id="tab-forms" hidden>
+      <div id="formBody" class="small">No form loaded.</div>
+    </div>
+    <div class="tabbody" id="tab-doc" hidden>
+      <div class="stack">
+        <button id="btnMerge">Insert / merge files…</button>
+        <button id="btnExtract">Extract pages…</button>
+        <button id="btnSplit">Split into parts…</button>
+        <button id="btnPng">Export current page as PNG</button>
+        <button id="btnProps">Document properties…</button>
+        <button id="btnFlatten">Flatten form fields</button>
+        <button id="btnInstall" hidden>Install app</button>
+      </div>
+      <p class="small" id="docInfo"></p>
+    </div>
+  </aside>
+</main>
+
+<input type="file" id="fileOpen" accept="application/pdf,.pdf" hidden>
+<input type="file" id="fileImage" accept="image/*" hidden>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="dropMask" hidden>Drop PDF to open</div>
+
+<script src="lib/pdf-lib.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
