@@ -25,7 +25,8 @@
   <div class="group tools" id="tools">
     <button data-tool="select" class="active" title="Select / move (Esc)">Select</button>
     <button data-tool="highlight" title="Highlight an area">Highlight</button>
-    <button data-tool="text" title="Add text">Text</button>
+    <button data-tool="edittext" title="Edit existing text: click a line of text and retype it">Edit text</button>
+    <button data-tool="text" title="Add new text">Add text</button>
     <button data-tool="ink" title="Freehand draw">Draw</button>
     <button data-tool="rect" title="Rectangle outline">Rectangle</button>
     <button data-tool="whiteout" title="Cover with white">Whiteout</button>
@@ -70,7 +71,7 @@
     <div id="empty">
       <h1>PDF Studio</h1>
       <p>Open a PDF, or drop one anywhere on this window.</p>
-      <p><button class="primary" id="btnOpen2">Open a PDF</button> <button id="btnNew">New blank PDF</button></p>
+      <p><button class="primary" id="btnOpen2">Open a PDF</button> <button id="btnNew">New blank PDF</button> <button id="btnEmptyConvert">Convert files to PDF…</button></p>
       <p class="small">Everything runs in your browser. Files are not uploaded anywhere.</p>
     </div>
     <div id="pages"></div>
@@ -80,7 +81,9 @@
     <div class="tabs">
       <button data-tab="search" class="active">Search</button>
       <button data-tab="forms">Forms</button>
-      <button data-tab="doc">Document</button>
+      <button data-tab="convert">Convert</button>
+      <button data-tab="tools">Tools</button>
+      <button data-tab="doc">Doc</button>
     </div>
     <div class="tabbody" id="tab-search">
       <form id="searchForm"><input id="searchInput" type="search" placeholder="Find text…"><button>Find</button></form>
@@ -89,6 +92,39 @@
     </div>
     <div class="tabbody" id="tab-forms" hidden>
       <div id="formBody" class="small">No form loaded.</div>
+    </div>
+    <div class="tabbody" id="tab-convert" hidden>
+      <h4>Create</h4>
+      <div class="stack">
+        <button id="btnBlank">New blank PDF…</button>
+        <button id="btnWriteDoc">Write a new document…</button>
+      </div>
+      <h4>Convert files to PDF</h4>
+      <p class="small">Word (.docx), Excel (.xlsx), CSV, text, Markdown, HTML, images, PDF. You can also drop files on the window.</p>
+      <input type="file" id="convFiles" multiple accept=".docx,.xlsx,.xlsm,.csv,.tsv,.txt,.md,.markdown,.html,.htm,.png,.jpg,.jpeg,.gif,.webp,.bmp,.pdf,.doc,.xls,.ppt,.pptx,.odt,.ods,.rtf">
+      <div class="field"><label>Page size</label><select id="convSize"><option>A4</option><option>Letter</option><option>Legal</option><option>A3</option><option>A5</option></select></div>
+      <div class="field"><label>Orientation</label><select id="convOrient"><option value="auto">Automatic (sheets landscape)</option><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>
+      <div class="field"><label>Images</label><select id="convFit"><option value="page">Fit on a page</option><option value="original">Original size</option></select></div>
+      <label class="small"><input type="checkbox" id="convCombine"> Combine several files into one PDF</label><br>
+      <label class="small"><input type="checkbox" id="convAppend"> Append to the open document</label>
+      <div class="stack" style="margin-top:8px"><button class="primary" id="btnConvert">Convert to PDF</button></div>
+      <h4>Convert this PDF to…</h4>
+      <div class="field"><label>Format</label><select id="expFormat"><option value="docx">Word (.docx) - text only</option><option value="xlsx">Excel (.xlsx) - detected tables</option><option value="txt">Plain text (.txt)</option><option value="png">Images (PNG)</option><option value="jpg">Images (JPG)</option></select></div>
+      <div class="field" id="expDpiRow" hidden><label>Image resolution</label><select id="expDpi"><option value="72">72 dpi</option><option value="150" selected>150 dpi</option><option value="300">300 dpi</option></select></div>
+      <div class="field"><label>Pages (blank = all, e.g. 1-3,5)</label><input type="text" id="expRange"></div>
+      <div class="stack"><button id="btnExport">Export</button></div>
+      <p class="small" id="convStatus" role="status"></p>
+    </div>
+    <div class="tabbody" id="tab-tools" hidden>
+      <div class="stack">
+        <button data-tool="edittext" id="btnToolEdit">Edit existing text</button>
+        <button id="btnOcr">OCR: make scans searchable…</button>
+        <button id="btnAutoRedact">Find &amp; redact sensitive data…</button>
+        <button id="btnPageNums">Add page numbers…</button>
+        <button id="btnWatermark">Add watermark…</button>
+        <button id="btnStrip">Remove metadata (privacy)</button>
+      </div>
+      <p class="small">Edit text: the original text stays in the file under a white cover. For confidential content use Redact, which removes it.</p>
     </div>
     <div class="tabbody" id="tab-doc" hidden>
       <div class="stack">

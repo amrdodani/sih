@@ -81,3 +81,9 @@ input[type=number],input[type=search],input[type=text],input[type=password],sele
   #panel{position:fixed;right:0;top:0;bottom:0;z-index:30;width:min(300px,90vw);box-shadow:-4px 0 14px rgba(0,0,0,.4)}
 }
 @media print{ body{display:none} }
+
+.tabs{flex-wrap:wrap}
+.tabs button{font-size:12px;padding:5px 4px}
+.tabbody h4{margin:14px 0 6px;font-size:13px}
+.tabbody h4:first-child{margin-top:0}
+.tabbody select,.tabbody input[type=text],.tabbody input[type=file]{width:100%}
